@@ -1,4 +1,4 @@
-module github.com/robteix/testmod
+module     github.com/IST0VE/site_pdf_api
 
 go 1.22
 
@@ -42,5 +42,5 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-    github.com/IST0VE/site_pdf_api v1.0
+
 )

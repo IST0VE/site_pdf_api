@@ -4,7 +4,6 @@ import (
 	"context"
 	"time"
 
-	"github.com/IST0VE/site_pdf_api/config"
 	"github.com/IST0VE/site_pdf_api/models"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,8 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
-
-var userCollection *mongo.Collection = config.DB.Collection("users")
 
 func CreateUser(user *models.User) (*mongo.InsertOneResult, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
@@ -29,10 +26,25 @@ func CreateUser(user *models.User) (*mongo.InsertOneResult, error) {
 func UpdateUser(userID primitive.ObjectID, updateUser *models.User) (*mongo.UpdateResult, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
+
+	if updateUser.Password != "" {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(updateUser.Password), bcrypt.DefaultCost)
+		if err != nil {
+			return nil, err
+		}
+		updateUser.Password = string(hashedPassword)
+	}
+
 	update := bson.M{
 		"$set": updateUser,
 	}
 	return userCollection.UpdateByID(ctx, userID, update)
+}
+
+func DeleteUser(userID primitive.ObjectID) (*mongo.DeleteResult, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	return userCollection.DeleteOne(ctx, bson.M{"_id": userID})
 }
 
 func GetUserByID(userID primitive.ObjectID) (*models.User, error) {

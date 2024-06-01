@@ -19,6 +19,11 @@ func SetupDatabase() {
 		log.Fatal(err)
 	}
 
+	err = client.Ping(context.TODO(), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	DB = client.Database("pdfSite")
 }
 

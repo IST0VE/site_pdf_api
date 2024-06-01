@@ -4,15 +4,19 @@ import (
 	"context"
 	"time"
 
-	"github.com/IST0VE/site_pdf_api/config"
 	"github.com/IST0VE/site_pdf_api/models"
-
+	"github.com/dgrijalva/jwt-go"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"golang.org/x/crypto/bcrypt"
 )
 
-var userConnection *mongo.Collection = config.DB.Collection("users")
+var jwtKey = []byte("31EYfrsKqdXN+P8r30pMEJaV7db6lbZo7HvVo94Fi78=")
+
+type Claims struct {
+	Email string `json:"email"`
+	jwt.StandardClaims
+}
 
 // RegisterUser создает нового пользователя
 func RegisterUser(user *models.User) (*mongo.InsertOneResult, error) {
@@ -43,4 +47,32 @@ func AuthenticateUser(email, password string) (string, error) {
 	}
 
 	return GenerateJWT(email)
+}
+
+// GenerateJWT генерирует JWT токен
+func GenerateJWT(email string) (string, error) {
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &Claims{
+		Email: email,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(jwtKey)
+}
+
+// ValidateJWT валидирует JWT токен
+func ValidateJWT(tokenString string) (*Claims, error) {
+	claims := &Claims{}
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return jwtKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !token.Valid {
+		return nil, err
+	}
+	return claims, nil
 }
