@@ -3,6 +3,7 @@ module github.com/robteix/testmod
 go 1.22
 
 require (
+    module/path v1.2.3
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.10.0
 	github.com/streadway/amqp v1.1.0
@@ -41,5 +42,5 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 	google.golang.org/protobuf v1.34.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-
+    github.com/IST0VE/site_pdf_api v1.0
 )
