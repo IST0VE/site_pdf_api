@@ -44,7 +44,12 @@ func main() {
 		protected.GET("/packages/:id", handlers.GetPackage)
 		protected.PUT("/packages/:id", handlers.UpdatePackage)
 		protected.DELETE("/packages/:id", handlers.DeletePackage)
+
+		// PDF generation route
+		//protected.POST("/generate-pdf", handlers.GeneratePDF)
 	}
+
+	r.POST("/generate-pdf", handlers.GeneratePDF)
 
 	r.Run(":8080")
 }
