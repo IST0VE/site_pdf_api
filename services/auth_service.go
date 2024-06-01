@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"./config"
-	"./models"
+	"github.com/IST0VE/site_pdf_api/config"
+	"github.com/IST0VE/site_pdf_api/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"

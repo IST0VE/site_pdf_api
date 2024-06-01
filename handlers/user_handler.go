@@ -3,9 +3,8 @@ package handlers
 import (
 	"net/http"
 
-	"./models"
-
-	"./services"
+	"github.com/IST0VE/site_pdf_api/models"
+	"github.com/IST0VE/site_pdf_api/services"
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"

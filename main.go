@@ -1,8 +1,8 @@
 package main
 
 import (
-	"/handlers"
-	"backend/config"
+	"github.com/IST0VE/site_pdf_api/config"
+	"github.com/IST0VE/site_pdf_api/handlers"
 
 	"github.com/gin-gonic/gin"
 )
