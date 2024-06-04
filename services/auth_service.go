@@ -18,7 +18,6 @@ type Claims struct {
 	jwt.StandardClaims
 }
 
-// RegisterUser создает нового пользователя
 func RegisterUser(user *models.User) (*mongo.InsertOneResult, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -30,7 +29,6 @@ func RegisterUser(user *models.User) (*mongo.InsertOneResult, error) {
 	return userCollection.InsertOne(ctx, user)
 }
 
-// AuthenticateUser аутентифицирует пользователя и генерирует JWT
 func AuthenticateUser(email, password string) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -49,7 +47,6 @@ func AuthenticateUser(email, password string) (string, error) {
 	return GenerateJWT(email)
 }
 
-// GenerateJWT генерирует JWT токен
 func GenerateJWT(email string) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &Claims{
@@ -62,7 +59,6 @@ func GenerateJWT(email string) (string, error) {
 	return token.SignedString(jwtKey)
 }
 
-// ValidateJWT валидирует JWT токен
 func ValidateJWT(tokenString string) (*Claims, error) {
 	claims := &Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {

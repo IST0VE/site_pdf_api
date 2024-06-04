@@ -13,7 +13,7 @@ import (
 )
 
 func generateRandomToken() string {
-	token := make([]byte, 32) // 32 bytes = 256 bits
+	token := make([]byte, 32)
 	if _, err := rand.Read(token); err != nil {
 		return ""
 	}
@@ -21,7 +21,7 @@ func generateRandomToken() string {
 }
 
 func CreateAPIToken(apiToken *models.APIToken) (*mongo.InsertOneResult, error) {
-	apiToken.Token = generateRandomToken() // Implement this function to generate a random token
+	apiToken.Token = generateRandomToken()
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	return apiTokenCollection.InsertOne(ctx, apiToken)
