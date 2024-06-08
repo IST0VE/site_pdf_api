@@ -51,5 +51,10 @@ func main() {
 
 	r.POST("/generate-pdf", handlers.GeneratePDF)
 
+	// Маршруты для временных почтовых ящиков
+	r.POST("/temp-mailboxes", handlers.CreateTempMailBox)
+	r.GET("/temp-mailboxes/:id/messages", handlers.GetMessages)
+	//r.DELETE("/temp-mailboxes/:id", handlers.DeleteTempMailBox)
+
 	r.Run(":8080")
 }
